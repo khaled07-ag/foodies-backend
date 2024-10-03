@@ -1,0 +1,31 @@
+const express = require('express');
+const app = express();
+const dotenv = require('dotenv');
+dotenv.config();
+const connectDB = require('./database');
+const userRoutes = require('./api/user/user.routes');
+const recipeRoutes = require('./api/recipe/recipe.routes');
+const cuisineRoutes = require('./api/cuisine/cuisine.routes');
+const passport = require('./middlewares/passport');
+const cors = require('cors');
+const morgan = require('morgan');
+const {notFoundHandler, errorHandler} = require('./middlewares/errorMiddleware');
+const path = require('path');
+const {localStrategy, JwtStrategy} = require('./middlewares/passport'); 
+connectDB();
+app.use(express.json());
+app.use(cors());
+app.use(morgan('dev'));
+app.use('/api/users', userRoutes);
+app.use('/api/recipes', recipeRoutes);
+app.use('/api/cuisines', cuisineRoutes);
+app.use(passport.initialize());
+passport.use('local',localStrategy);
+passport.use('jwt',JwtStrategy);
+app.use(notFoundHandler);
+app.use(errorHandler);
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
+});
