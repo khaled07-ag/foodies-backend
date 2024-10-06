@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Cuisine',
   }],
-  image: {type: String},
+  userImage: {type: String},
 });
 
 module.exports = mongoose.model('User', UserSchema);
