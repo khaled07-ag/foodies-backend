@@ -8,6 +8,7 @@ const CuisineSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   }],
+  cuisineImage: {type: String},
   
 });
 

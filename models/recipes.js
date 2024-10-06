@@ -9,7 +9,7 @@ const RecipeSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-  image: {type: String},
+  recipeImage: {type: String},
 });
 
 module.exports = mongoose.model('Recipe', RecipeSchema);
