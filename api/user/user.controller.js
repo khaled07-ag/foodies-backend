@@ -12,7 +12,7 @@ const hashPassword = async (password) => {
 }
 const generateToken = (user) => {
     const payload = {
-        id: user._Id,
+        id: user._id,
         username: user.username,
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '1h'});
@@ -38,10 +38,11 @@ try {
 };
 const signin = async (req, res, next) => {
 try {
-  const user = await generateToken(req.user);
-  return res.status(200).json({data: user});
+  const token = generateToken(req.user);
+  return res.status(200).json({token: token});
 } catch (error) {
     next(error);
+    
 }
 }
 const getUser = async (req, res, next) => {
