@@ -19,9 +19,10 @@ connectDB();
 app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));
-app.use("/media",express.static(path.join(__dirname, 'media')));
+app.use(passport.initialize());
 passport.use('local',localStrategy);
 passport.use('jwt',JwtStrategy);
+app.use("/media",express.static(path.join(__dirname, 'media')));
 //routes
 app.use('/api/users', userRouter);
 app.use('/api/recipes', recipeRouter);
