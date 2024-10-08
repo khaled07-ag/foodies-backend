@@ -53,6 +53,14 @@ const getUser = async (req, res, next) => {
         next(error);
     }
 }
+const getAllUsers = async (req, res, next) => {
+    try {
+        const users = await User.find();
+        return res.status(200).json({data: users});
+    } catch (error) {
+        next(error);
+    }
+}
 const updateUser = async (req, res, next) => {
     try {
         const {id} = req.params;
@@ -85,6 +93,7 @@ const deleteUser = async (req, res, next) => {
 module.exports = {
   signup,
   signin,
+  getAllUsers,
   getUser,
   updateUser,
   deleteUser,
