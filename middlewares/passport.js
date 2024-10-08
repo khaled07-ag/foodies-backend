@@ -8,17 +8,16 @@ dotenv.config();
 
 const localStrategy = new LocalStrategy(
   {
-    usernameField: "name",
+    usernameField: "email",
     passwordField: "password",
   },
-  async (name, password, done) => {
-    console.log("passport")
+  async (email, password, done) => {
+    console.log("passport");
     try {
-      const foundUser = await User.findOne({ name: name }); //find the user
-      if (!foundUser)
-        return done({ message: "Username or password incorrect" });
+      const foundUser = await User.findOne({ email: email }); //find the user
+      if (!foundUser) return done({ message: "email or password incorrect" });
       const isMatch = await bcrypt.compare(password, foundUser.password); //check password
-      if (!isMatch) return done({ message: "Username or password incorrect" });
+      if (!isMatch) return done({ message: "email or password incorrect" });
       return done(null, foundUser); //req.user //go to controller if all's good
     } catch (error) {
       return done(error);
