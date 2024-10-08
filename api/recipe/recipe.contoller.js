@@ -2,7 +2,7 @@ const Recipe = require("../../models/recipes");
 const User = require("../../models/user");
 const createRecipe = async (req, res, next) => {
   try {
-    const {userId} = req.params.userId;
+    const {userId} = req.params;
     const recipeData = {...req.body, userId};
     if (req.file) {
       recipeData.recipeImage = req.file.path;
@@ -12,6 +12,7 @@ const createRecipe = async (req, res, next) => {
     const user = await User.findByIdAndUpdate(userId, {
         $push: {recipes: recipe._id}
     });
+    console.log(user);
     return res.status(201).json({ data: recipe });
   } catch (error) {
     next(error);
