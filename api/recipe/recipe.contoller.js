@@ -50,7 +50,9 @@ const getRecipes = async (req, res, next) => {
 
 const getOneRecipe = async (req, res, next) => {
   try {
-    const recipe = await Recipe.findById(req.params.id);
+    const recipe = await Recipe.findById(req.params.id)
+      .populate("cuisine")
+      .populate("user");
     return res.status(200).json({ data: recipe });
   } catch (error) {
     next(error);
