@@ -47,9 +47,10 @@ try {
 }
 const getUser = async (req, res, next) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.user.id).populate('Cuisines').populate('recipes');
         return res.status(200).json({data: user});
     } catch (error) {
+        console.log(error);
         next(error);
     }
 }
@@ -64,6 +65,7 @@ const getAllUsers = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
     try {
         const {id} = req.params;
+        
         if (req.file) {
             req.body.userImage = req.file.path;
         };
@@ -71,12 +73,14 @@ const updateUser = async (req, res, next) => {
             {_id: req.body.cuisines}, 
             {$push: {User: id}}
         );
+
+        
         const updatedUser = await User.findByIdAndUpdate(id, {
-            $push: {cuisines: req.body.cuisines}
+            $push: {Cuisines: req.body.cuisines}
         });
         
 
-        return res.status(200).json({data: user});
+        return res.status(200).json({data: updatedUser});
     } catch (error) {
         next(error);
     }
@@ -84,6 +88,14 @@ const updateUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id);
+        return res.status(200).json({data: user});
+    } catch (error) {
+        next(error);
+    }
+}
+const getOneUser = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.params.id);
         return res.status(200).json({data: user});
     } catch (error) {
         next(error);
@@ -97,5 +109,6 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
+  getOneUser,
 };
 
