@@ -1,6 +1,6 @@
 const express = require("express");
 const recipeRouter = express.Router();
-const upload = require('../../middlewares/multer');
+const upload = require("../../middlewares/multer");
 const {
   createRecipe,
   getRecipes,
@@ -8,12 +8,17 @@ const {
   updateRecipe,
   deleteRecipe,
 } = require("./recipe.contoller");
+const passport = require("passport");
 
-recipeRouter.post("/:userId",upload.single("recipeImage"), createRecipe);
+recipeRouter.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  createRecipe
+);
 recipeRouter.get("/", getRecipes);
 recipeRouter.get("/:id", getOneRecipe);
-recipeRouter.put("/:id",upload.single("recipeImage"), updateRecipe);
+recipeRouter.put("/:id", upload.single("recipeImage"), updateRecipe);
 recipeRouter.delete("/:id", deleteRecipe);
 
 module.exports = recipeRouter;
-
