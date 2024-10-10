@@ -100,7 +100,7 @@ const deleteUser = async (req, res, next) => {
 }
 const getOneUser = async (req, res, next) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.params.id).populate('recipes Cuisines');;
         return res.status(200).json({data: user});
     } catch (error) {
         next(error);
