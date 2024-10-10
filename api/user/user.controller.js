@@ -64,7 +64,7 @@ const getAllUsers = async (req, res, next) => {
 }
 const updateUser = async (req, res, next) => {
     try {
-        
+        console.log(req.file)
         
         if (req.file) {
             req.body.userImage = req.file.path;
@@ -74,6 +74,11 @@ const updateUser = async (req, res, next) => {
             {$push: {User: req.user.id}}
         );
 
+        const updateUser = await User.findByIdAndUpdate(req.user.id, {
+            $set: {
+                ...req.body
+            }
+        });
         
         const updatedUser = await User.findByIdAndUpdate(req.user.id, {
             $push: {Cuisines: req.body.cuisines}
